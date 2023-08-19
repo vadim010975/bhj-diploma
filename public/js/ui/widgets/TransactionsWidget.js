@@ -4,6 +4,8 @@
  * создания нового дохода или расхода
  * */
 
+//const { application } = require("express");
+
 class TransactionsWidget {
   /**
    * Устанавливает полученный элемент
@@ -11,7 +13,13 @@ class TransactionsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor( element ) {
+  constructor(element) {
+    if (document.body.contains(element)) {
+      this.element = element;
+      this.registerEvents();
+    } else {
+      throw new Error('Ошибка! Переданный элемент не существует!');
+    }
 
   }
   /**
@@ -21,6 +29,19 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
-
+    const createIncomeButtonElement = this.element.querySelector('.create-income-button');
+    if (createIncomeButtonElement) {
+      createIncomeButtonElement.addEventListener('click', () => {
+        App.getModal('newIncome').open();
+        App.getForm('createIncome').setSelected();
+      });
+    }
+    const createExpenseButton = this.element.querySelector('.create-expense-button');
+    if (createExpenseButton) {
+      createExpenseButton.addEventListener('click', () => {
+        App.getModal('newExpense').open();
+        App.getForm('createExpense').setSelected();
+      });
+    }
   }
 }

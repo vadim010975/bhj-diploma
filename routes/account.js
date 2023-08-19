@@ -21,7 +21,8 @@ router.put("/", upload.none(), function(request, response) {
         return;
     }
 
-    const createdAccount = db.get("accounts").find({name}).value();
+    const user_id = userValue.id;
+    const createdAccount = db.get("accounts").find({name, user_id}).value();
     if(createdAccount){
         response.json({success: false, error: "Счёт с таким именем уже существует"});
         return;
